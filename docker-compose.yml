@@ -1,0 +1,28 @@
+services:
+  model-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.model
+    container_name: yolo_model
+    ports:
+      - "8000:8000"
+
+  batch-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.batch
+    container_name: yolo_batch
+    ports:
+      - "8001:8001"
+    depends_on:
+      - model-server
+
+  locust:
+    build:
+      context: .
+      dockerfile: Dockerfile.locust
+    container_name: yolo_locust
+    ports:
+      - "8089:8089"
+    depends_on:
+      - batch-server

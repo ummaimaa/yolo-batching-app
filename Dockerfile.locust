@@ -1,0 +1,19 @@
+FROM python:3.10-slim
+
+WORKDIR /mnt/locust
+
+# Install system dependencies (just in case)
+RUN apt-get update && apt-get install -y \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy locust test files
+COPY locustfile/ /mnt/locust/
+
+# Default command: run locust
+CMD ["locust", "-f", "locustfile.py", "--host", "http://batch-server:8001"]
