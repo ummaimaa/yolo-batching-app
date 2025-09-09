@@ -6,5 +6,5 @@ class YoloUser(HttpUser):
     @task
     def predict(self):
         # Test request with one image
-        with open("test.jpg", "rb") as f:
+        with open("IMG_9345.png", "rb") as f:
             self.client.post("/detect", files={"file": f})
